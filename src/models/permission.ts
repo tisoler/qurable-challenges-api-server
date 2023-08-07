@@ -7,43 +7,33 @@ import {
 } from 'sequelize'
 import DataBaseConnection from '../dataBase/sequelizeSingleton'
 
-export class Registration extends Model<
-  InferAttributes<Registration>,
-  InferCreationAttributes<Registration>
+export class Permission extends Model<
+  InferAttributes<Permission>,
+  InferCreationAttributes<Permission>
 > {
   
   declare id: CreationOptional<number>
-  declare fullname: string
-  declare idEvent: number
-  declare date: Date
+  declare description: string
 }
 
-export const initRegistration = async () => {
+export const initPermission = async () => {
 	const sequelize = await DataBaseConnection.getSequelizeInstance()
 
-	Registration.init(
+	Permission.init(
 		{
 			id: {
 				type: DataTypes.INTEGER.UNSIGNED,
 				autoIncrement: true,
 				primaryKey: true
 			},
-			fullname: {
+			description: {
 				type: new DataTypes.STRING,
 				allowNull: false
-			},
-			idEvent: {
-				type: DataTypes.INTEGER.UNSIGNED,
-				allowNull: false
-			},
-			date: {
-				type: new DataTypes.DATE,
-				allowNull: true
 			},
 		},
 		{
 			sequelize,
-			tableName: 'registration',
+			tableName: 'permission',
 			timestamps: false
 		}
 	)

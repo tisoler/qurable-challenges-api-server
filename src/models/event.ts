@@ -16,6 +16,7 @@ export class Event extends Model<
   declare name: string
   declare description: string
 	declare dateTime: Date
+	declare active: boolean
 }
 
 export const initEvent = async () => {
@@ -39,18 +40,20 @@ export const initEvent = async () => {
 			dateTime: {
 				type: DataTypes.DATE,
 				allowNull: false
+			},
+			active: {
+				type: DataTypes.BOOLEAN,
+				allowNull: false
 			}
 		},
 		{
 			sequelize,
-			tableName: 'events',
+			tableName: 'event',
 			timestamps: false
 		}
 	)
 
 	await initRegistration()
 
-	Event.hasMany(Registration, {
-		sourceKey: 'id', foreignKey: 'idEvent', as: 'registrations',
-	})
+	if (!Event.associations['registrations']) Event.hasMany(Registration, { sourceKey: 'id', foreignKey: 'idEvent', as: 'registrations' })
 }
